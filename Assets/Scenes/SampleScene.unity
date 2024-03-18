@@ -799,12 +799,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1849901879102475396, guid: aa0dc18b8b0e3924a831420e4edc1397,
         type: 3}
+      propertyPath: walkSpeed
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1849901879102475396, guid: aa0dc18b8b0e3924a831420e4edc1397,
+        type: 3}
       propertyPath: lookLimitV
       value: 70
+      objectReference: {fileID: 0}
+    - target: {fileID: 1849901879102475396, guid: aa0dc18b8b0e3924a831420e4edc1397,
+        type: 3}
+      propertyPath: rotateToTargetTime
+      value: 0.68
       objectReference: {fileID: 0}
     - target: {fileID: 1856048055645400407, guid: aa0dc18b8b0e3924a831420e4edc1397,
         type: 3}
       propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2318077701276003799, guid: aa0dc18b8b0e3924a831420e4edc1397,
+        type: 3}
+      propertyPath: holdToSprint
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3558886260635474220, guid: aa0dc18b8b0e3924a831420e4edc1397,
