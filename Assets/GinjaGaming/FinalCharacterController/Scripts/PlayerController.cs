@@ -12,6 +12,7 @@ namespace GinjaGaming.FinalCharacterController
         [Header("Components")]
         [SerializeField] private CharacterController _characterController;
         [SerializeField] private Camera _playerCamera;
+        [SerializeField] private CapsuleCollider _groundCollider;
         public float RotationMismatch { get; private set; } = 0f;
         public bool IsRotatingToTarget { get; private set; } = false;
 
@@ -36,12 +37,17 @@ namespace GinjaGaming.FinalCharacterController
         public float lookSenseV = 0.1f;
         public float lookLimitV = 89f;
 
+        [Header("Environment Details")]
+        [SerializeField] private LayerMask _groundLayers;
+
         private PlayerLocomotionInput _playerLocomotionInput;
         private PlayerState _playerState;
 
         private Vector2 _cameraRotation = Vector2.zero;
         private Vector2 _playerTargetRotation = Vector2.zero;
 
+        private float _startStepOffset;
+        private bool _jumpedLastFrame = false;
         private bool _isRotatingClockwise = false;
         private float _rotatingToTargetTimer = 0f;
         private float _verticalVelocity = 0f;
@@ -52,6 +58,7 @@ namespace GinjaGaming.FinalCharacterController
         {
             _playerLocomotionInput = GetComponent<PlayerLocomotionInput>();
             _playerState = GetComponent<PlayerState>();
+            _startStepOffset = _characterController.stepOffset;
         }
         #endregion
 
@@ -79,28 +86,38 @@ namespace GinjaGaming.FinalCharacterController
             _playerState.SetPlayerMovementState(lateralState);
 
             // Control Airborn State
-            if (!isGrounded && _characterController.velocity.y > 0f)
+            if ((!isGrounded || _jumpedLastFrame) && _characterController.velocity.y > 0f)
             {
                 _playerState.SetPlayerMovementState(PlayerMovementState.Jumping);
+                _jumpedLastFrame = false;
+                _characterController.stepOffset = 0f;
             }
-            else if (!isGrounded && _characterController.velocity.y <= 0f)
+            else if ((!isGrounded || _jumpedLastFrame) && _characterController.velocity.y <= 0f)
             {
                 _playerState.SetPlayerMovementState(PlayerMovementState.Falling);
+                _jumpedLastFrame = false;
+                _characterController.stepOffset = 0f;
+            }
+            else
+            {
+                _characterController.stepOffset = _startStepOffset;
             }
         }
 
         private void HandleVerticalMovement()
         {
             bool isGrounded = _playerState.InGroundedState();
-
-            if (isGrounded && _verticalVelocity < 0)
-                _verticalVelocity = 0f;
+            bool onSlope = CharacterControllerUtils.GetCharacterControllerNormal(_characterController, _groundLayers) != Vector3.up;
 
             _verticalVelocity -= gravity * Time.deltaTime;
+
+            if ((IsGroundedWhileAirborn() || onSlope) && _verticalVelocity < 0 && isGrounded)
+                _verticalVelocity = 0f;
 
             if (_playerLocomotionInput.JumpPressed && isGrounded)
             {
                 _verticalVelocity += Mathf.Sqrt(jumpSpeed * 3 * gravity);
+                _jumpedLastFrame = true;
             }
         }
 
@@ -117,12 +134,15 @@ namespace GinjaGaming.FinalCharacterController
             float clampLateralMagnitude = isWalking ? walkSpeed :
                                           isSprinting ? sprintSpeed : runSpeed;
 
+            // Get lateral movement from input direction and current slope
+            Vector3 normal = isGrounded ? CharacterControllerUtils.GetCharacterControllerNormal(_characterController, _groundLayers) : Vector3.up;
             Vector3 cameraForwardXZ = new Vector3(_playerCamera.transform.forward.x, 0f, _playerCamera.transform.forward.z).normalized;
             Vector3 cameraRightXZ = new Vector3(_playerCamera.transform.right.x, 0f, _playerCamera.transform.right.z).normalized;
             Vector3 movementDirection = cameraRightXZ * _playerLocomotionInput.MovementInput.x + cameraForwardXZ * _playerLocomotionInput.MovementInput.y;
 
-            Vector3 movementDelta = movementDirection * lateralAcceleration;
-            Vector3 newVelocity = _characterController.velocity + movementDelta;
+            Vector3 movementDelta = Vector3.ProjectOnPlane(movementDirection * lateralAcceleration, normal);
+            Vector3 newVelocity = Vector3.ProjectOnPlane(_characterController.velocity, normal);
+            newVelocity += movementDelta;
 
             // Add drag to player
             Vector3 currentDrag = newVelocity.normalized * drag;
@@ -207,6 +227,25 @@ namespace GinjaGaming.FinalCharacterController
 
         private bool IsGrounded()
         {
+            bool grounded = _playerState.InGroundedState() ? IsGroundedWhileGrounded() : IsGroundedWhileAirborn();
+
+            return grounded;
+        }
+
+        private bool IsGroundedWhileGrounded()
+        {
+            Collider[] colliders = Physics.OverlapCapsule(
+                _groundCollider.transform.TransformPoint(_groundCollider.center - Vector3.up * _groundCollider.height * 0.5f),
+                _groundCollider.transform.TransformPoint(_groundCollider.center + Vector3.up * _groundCollider.height * 0.5f),
+                _groundCollider.radius,
+                _groundLayers
+            );
+
+            return colliders.Length > 0;
+        }
+
+        private bool IsGroundedWhileAirborn()
+        {
             return _characterController.isGrounded;
         }
 
@@ -214,6 +253,29 @@ namespace GinjaGaming.FinalCharacterController
         {
             // This means player is moving diagonally at 45 degrees or forward, if so, we can run
             return _playerLocomotionInput.MovementInput.y >= Mathf.Abs(_playerLocomotionInput.MovementInput.x);
+        }
+        #endregion
+
+        #region Validation
+        private void OnValidate()
+        {
+            if (!gameObject.activeInHierarchy)
+            {
+                return;
+            }
+
+            if (_groundCollider.radius != _characterController.radius ||
+                _groundCollider.height != _characterController.height ||
+                _groundCollider.center.y != _characterController.center.y - _characterController.radius)
+            {
+                _groundCollider.radius = _characterController.radius;
+                _groundCollider.height = _characterController.height;
+                _groundCollider.center = new Vector3(_characterController.center.x,
+                                                     _characterController.center.y - _characterController.radius,
+                                                     _characterController.center.z);
+
+                Debug.LogWarning("Ground collider did not have optimal settings - values have been updated");
+            }
         }
         #endregion
     }
