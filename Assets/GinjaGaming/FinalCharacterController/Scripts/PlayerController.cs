@@ -112,6 +112,7 @@ namespace GinjaGaming.FinalCharacterController
             _verticalVelocity -= gravity * Time.deltaTime;
 
             if ((IsGroundedWhileAirborn() || onSlope) && _verticalVelocity < 0 && isGrounded)
+            // if (IsGroundedWhileAirborn() && _verticalVelocity < 0 && isGrounded)
                 _verticalVelocity = 0f;
 
             if (_playerLocomotionInput.JumpPressed && isGrounded)
@@ -256,7 +257,7 @@ namespace GinjaGaming.FinalCharacterController
         }
         #endregion
 
-        #region Validation
+/*        #region Validation
         private void OnValidate()
         {
             if (!gameObject.activeInHierarchy)
@@ -264,9 +265,11 @@ namespace GinjaGaming.FinalCharacterController
                 return;
             }
 
+            float groundColliderCenter = _characterController.center.y - _characterController.radius;
+
             if (_groundCollider.radius != _characterController.radius ||
                 _groundCollider.height != _characterController.height ||
-                _groundCollider.center.y != _characterController.center.y - _characterController.radius)
+                _groundCollider.center.y != groundColliderCenter)
             {
                 _groundCollider.radius = _characterController.radius;
                 _groundCollider.height = _characterController.height;
@@ -277,6 +280,6 @@ namespace GinjaGaming.FinalCharacterController
                 Debug.LogWarning("Ground collider did not have optimal settings - values have been updated");
             }
         }
-        #endregion
+        #endregion*/
     }
 }
