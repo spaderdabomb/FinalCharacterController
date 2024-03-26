@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.ProBuilder;
 
 namespace GinjaGaming.FinalCharacterController
 {
@@ -8,19 +9,26 @@ namespace GinjaGaming.FinalCharacterController
     {
         public static Vector3 GetCharacterControllerNormal(CharacterController characterController, LayerMask layerMask = default)
         {
+
             Vector3 normal = Vector3.up;
             RaycastHit hit;
             Vector3 transformCenter = characterController.transform.position + characterController.center;
-            
-            if (Physics.SphereCast(transformCenter,
-                                   characterController.radius,
-                                   Vector3.down,
-                                   out hit,
-                                   characterController.center.y + 0.1f,
-                                   layerMask))
+
+            Transform transform = characterController.transform;
+            Vector3 center = transform.position + Vector3.up * characterController.height / 2;
+
+            RaycastHit hit2;
+            if (Physics.Raycast(center, Vector3.down, out hit2, characterController.height / 2f + 0.2f, layerMask))
             {
-                normal = Vector3.Angle(hit.normal, Vector3.up) <= characterController.slopeLimit ? hit.normal : Vector3.up;
-                normal = new Vector3(0f, Mathf.Round(normal.y * 100f)/100f, Mathf.Round(normal.z * 100f) / 100f).normalized;
+                normal = hit2.normal;
+                return normal;
+            }
+
+
+            if (Physics.SphereCast(transformCenter, characterController.radius, Vector3.down, out hit, characterController.center.y + 0.4f, layerMask))
+            {
+                normal = hit.normal;
+                return normal;
             }
 
             return normal;
