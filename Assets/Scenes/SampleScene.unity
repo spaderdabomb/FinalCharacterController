@@ -825,12 +825,12 @@ PrefabInstance:
     - target: {fileID: 1849901879102475396, guid: aa0dc18b8b0e3924a831420e4edc1397,
         type: 3}
       propertyPath: lookSenseH
-      value: 20
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 1849901879102475396, guid: aa0dc18b8b0e3924a831420e4edc1397,
         type: 3}
       propertyPath: lookSenseV
-      value: 20
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 1849901879102475396, guid: aa0dc18b8b0e3924a831420e4edc1397,
         type: 3}
