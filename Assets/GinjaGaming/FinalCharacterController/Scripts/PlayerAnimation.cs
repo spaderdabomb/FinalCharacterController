@@ -42,7 +42,7 @@ namespace GinjaGaming.FinalCharacterController
             bool isGrounded = _playerState.InGroundedState();
 
             Vector2 inputTarget = isSprinting ? _playerLocomotionInput.MovementInput * 1.5f : _playerLocomotionInput.MovementInput;
-            _currentBlendInput = Vector3.Lerp(_currentBlendInput, inputTarget, locomotionBlendSpeed);
+            _currentBlendInput = Vector3.Lerp(_currentBlendInput, inputTarget, locomotionBlendSpeed * Time.deltaTime);
 
             _animator.SetBool(isGroundedHash, isGrounded);
             _animator.SetBool(isFallingHash, isFalling);
