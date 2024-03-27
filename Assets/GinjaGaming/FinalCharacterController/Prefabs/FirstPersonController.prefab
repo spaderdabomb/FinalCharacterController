@@ -1132,9 +1132,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _characterController: {fileID: 8275485966994653030}
   _playerCamera: {fileID: 8697340167493014623}
-  runAcceleration: 0.25
+  walkAcceleration: 25
+  walkSpeed: 2
+  runAcceleration: 35
   runSpeed: 4
-  drag: 0.1
+  sprintAcceleration: 50
+  sprintSpeed: 7
+  drag: 20
+  gravity: 25
+  jumpSpeed: 1
+  movingThreshold: 0.01
+  playerModelRotationSpeed: 10
+  rotateToTargetTime: 0.67
   lookSenseH: 0.1
   lookSenseV: 0.1
   lookLimitV: 89
@@ -1150,6 +1159,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 490eb3a69b8a8cf4b8d8cf676effd1b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  holdToSprint: 1
 --- !u!1 &1971155070314203906
 GameObject:
   m_ObjectHideFlags: 0

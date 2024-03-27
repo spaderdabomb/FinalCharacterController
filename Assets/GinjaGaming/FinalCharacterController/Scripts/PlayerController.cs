@@ -121,12 +121,12 @@ namespace GinjaGaming.FinalCharacterController
             Vector3 cameraRightXZ = new Vector3(_playerCamera.transform.right.x, 0f, _playerCamera.transform.right.z).normalized;
             Vector3 movementDirection = cameraRightXZ * _playerLocomotionInput.MovementInput.x + cameraForwardXZ * _playerLocomotionInput.MovementInput.y;
 
-            Vector3 movementDelta = movementDirection * lateralAcceleration;
+            Vector3 movementDelta = movementDirection * lateralAcceleration * Time.deltaTime;
             Vector3 newVelocity = _characterController.velocity + movementDelta;
 
             // Add drag to player
-            Vector3 currentDrag = newVelocity.normalized * drag;
-            newVelocity = (newVelocity.magnitude > drag) ? newVelocity - currentDrag : Vector3.zero;
+            Vector3 currentDrag = newVelocity.normalized * drag * Time.deltaTime;
+            newVelocity = (newVelocity.magnitude > drag * Time.deltaTime) ? newVelocity - currentDrag : Vector3.zero;
             newVelocity = Vector3.ClampMagnitude(newVelocity, clampLateralMagnitude);
             newVelocity.y += _verticalVelocity;
 
