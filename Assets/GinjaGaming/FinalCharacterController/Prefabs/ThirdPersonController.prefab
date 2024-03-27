@@ -2714,7 +2714,7 @@ CharacterController:
   m_Radius: 0.3
   m_SlopeLimit: 45
   m_StepOffset: 0.3
-  m_SkinWidth: 0.08
+  m_SkinWidth: 0.0001
   m_MinMoveDistance: 0.00001
   m_Center: {x: 0, y: 0.9, z: 0}
 --- !u!114 &1849901879102475396
@@ -2731,12 +2731,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _characterController: {fileID: 1459228644294326337}
   _playerCamera: {fileID: 3822927564161998416}
-  runAcceleration: 0.25
+  runAcceleration: 35
   runSpeed: 4
-  drag: 0.1
+  sprintAccelerataion: 50
+  sprintSpeed: 7
+  drag: 20
+  gravity: 25
+  jumpSpeed: 1
+  movingThreshold: 0.01
   lookSenseH: 0.1
   lookSenseV: 0.1
-  lookLimitV: 75
+  lookLimitV: 70
 --- !u!114 &2318077701276003799
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2749,6 +2754,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 490eb3a69b8a8cf4b8d8cf676effd1b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  holdToSprint: 1
 --- !u!114 &3391622028761012007
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2774,6 +2780,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d015a2dfbd3791849a8c184d57c68c14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _animator: {fileID: 8066352358851958603}
+  locomotionBlendSpeed: 4
 --- !u!1 &4447334899436784638
 GameObject:
   m_ObjectHideFlags: 0
@@ -3390,8 +3398,8 @@ MonoBehaviour:
   m_LookaheadTime: 0
   m_LookaheadSmoothing: 0
   m_LookaheadIgnoreY: 0
-  m_HorizontalDamping: 0.5
-  m_VerticalDamping: 0.5
+  m_HorizontalDamping: 0.1
+  m_VerticalDamping: 0.1
   m_ScreenX: 0.5
   m_ScreenY: 0.5
   m_DeadZoneWidth: 0
@@ -4463,7 +4471,7 @@ AudioListener:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6031866397155370899}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!114 &2970230055649097046
 MonoBehaviour:
   m_ObjectHideFlags: 0
