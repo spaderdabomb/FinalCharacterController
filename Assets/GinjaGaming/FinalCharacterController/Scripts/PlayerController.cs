@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.ProBuilder;
 
 namespace GinjaGaming.FinalCharacterController
 {
@@ -79,6 +80,11 @@ namespace GinjaGaming.FinalCharacterController
             bool isWalking = (isMovingLaterally && !canRun) || _playerLocomotionInput.WalkToggledOn; //matters
             bool isGrounded = IsGrounded();
 
+            Vector3 normal = isGrounded ? CharacterControllerUtils.GetCharacterControllerNormal(_characterController, _groundLayers) : Vector3.up;
+            Vector3 initialNormal = normal;
+            float normalAngle = Vector3.Angle(normal, Vector3.up);
+            bool validNormal = normalAngle <= _characterController.slopeLimit;
+
             PlayerMovementState lateralState = isWalking ? PlayerMovementState.Walking :
                                                isSprinting ? PlayerMovementState.Sprinting :
                                                isMovingLaterally || isMovementInput ? PlayerMovementState.Running : PlayerMovementState.Idling;
@@ -86,13 +92,19 @@ namespace GinjaGaming.FinalCharacterController
             _playerState.SetPlayerMovementState(lateralState);
 
             // Control Airborn State
-            if (!isGrounded && _characterController.velocity.y > 0f)
+            if ((!isGrounded || !validNormal) && _characterController.velocity.y > 0f)
             {
                 _playerState.SetPlayerMovementState(PlayerMovementState.Jumping);
+                _characterController.stepOffset = 0f;
             }
-            else if (!isGrounded && _characterController.velocity.y <= 0f)
+            else if ((!isGrounded || !validNormal) && _characterController.velocity.y <= 0f)
             {
                 _playerState.SetPlayerMovementState(PlayerMovementState.Falling);
+                _characterController.stepOffset = 0f;
+            }
+            else
+            {
+                _characterController.stepOffset = 0.3f;
             }
         }
 
@@ -111,6 +123,11 @@ namespace GinjaGaming.FinalCharacterController
             }
         }
 
+        private void OnControllerColliderHit(ControllerColliderHit hit)
+        {
+            print(hit.normal);
+        }
+
         private void HandleLateralMovement()
         {
             // Create quick references for current state
@@ -125,10 +142,14 @@ namespace GinjaGaming.FinalCharacterController
                                           isSprinting ? sprintSpeed : runSpeed;
 
             // Get lateral movement from input direction and current slope
-            Vector3 normal = isGrounded ? CharacterControllerUtils.GetCharacterControllerNormal(_characterController, _groundLayers) : Vector3.up;
+            Vector3 normal = CharacterControllerUtils.GetCharacterControllerNormal(_characterController, _groundLayers);
             Vector3 initialNormal = normal;
-            float normalAngle = Vector3.Angle(normal, Vector3.up);
+            float normalAngle = Vector3.Angle(initialNormal, Vector3.up);
             normal = new Vector3(0f, normal.y, normal.z).normalized;
+            if (normalAngle > _characterController.slopeLimit)
+            {
+                normal = Vector3.up;
+            }
 
             Vector3 cameraForwardXZ = new Vector3(_playerCamera.transform.forward.x, 0f, _playerCamera.transform.forward.z).normalized;
             Vector3 cameraRightXZ = new Vector3(_playerCamera.transform.right.x, 0f, _playerCamera.transform.right.z).normalized;
@@ -139,7 +160,7 @@ namespace GinjaGaming.FinalCharacterController
 
             if (normalAngle > _characterController.slopeLimit)
             {
-                movementDelta = Vector3.zero;
+                // movementDelta = Vector3.zero;
                 movementDelta += new Vector3(initialNormal.x, 0f, initialNormal.z).normalized * edgeSlideSpeed;
             }
 
