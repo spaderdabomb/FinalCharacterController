@@ -14,6 +14,7 @@ namespace GinjaGaming.FinalCharacterController
         [SerializeField] private CharacterController _characterController;
         [SerializeField] private Camera _playerCamera;
         [SerializeField] private CapsuleCollider _groundCollider;
+        [SerializeField] private CapsuleCollider _gravityCollider;
         public float RotationMismatch { get; private set; } = 0f;
         public bool IsRotatingToTarget { get; private set; } = false;
 
@@ -28,6 +29,7 @@ namespace GinjaGaming.FinalCharacterController
         public float gravity = 25f;
         public float jumpSpeed = 1.0f;
         public float movingThreshold = 0.01f;
+        public float edgeSlideSpeed = 1f;
 
         [Header("Animation")]
         public float playerModelRotationSpeed = 10f;
@@ -98,10 +100,10 @@ namespace GinjaGaming.FinalCharacterController
         {
             bool isGrounded = _playerState.InGroundedState();
 
-            if (isGrounded && _verticalVelocity < 0)
-                _verticalVelocity = 0f;
-
             _verticalVelocity -= gravity * Time.deltaTime;
+
+            if (IsGroundedWhileGrounded() && isGrounded && _verticalVelocity < 0)
+                _verticalVelocity = 0f;
 
             if (_playerLocomotionInput.JumpPressed && isGrounded)
             {
@@ -124,12 +126,23 @@ namespace GinjaGaming.FinalCharacterController
 
             // Get lateral movement from input direction and current slope
             Vector3 normal = isGrounded ? CharacterControllerUtils.GetCharacterControllerNormal(_characterController, _groundLayers) : Vector3.up;
+            Vector3 initialNormal = normal;
+            float normalAngle = Vector3.Angle(normal, Vector3.up);
+            normal = new Vector3(0f, normal.y, normal.z).normalized;
+
             Vector3 cameraForwardXZ = new Vector3(_playerCamera.transform.forward.x, 0f, _playerCamera.transform.forward.z).normalized;
             Vector3 cameraRightXZ = new Vector3(_playerCamera.transform.right.x, 0f, _playerCamera.transform.right.z).normalized;
             Vector3 movementDirection = cameraRightXZ * _playerLocomotionInput.MovementInput.x + cameraForwardXZ * _playerLocomotionInput.MovementInput.y;
 
             Vector3 movementDelta = Vector3.ProjectOnPlane(movementDirection * lateralAcceleration * Time.deltaTime, normal);
             Vector3 newVelocity = Vector3.ProjectOnPlane(_characterController.velocity, normal);
+
+            if (normalAngle > _characterController.slopeLimit)
+            {
+                movementDelta = Vector3.zero;
+                movementDelta += new Vector3(initialNormal.x, 0f, initialNormal.z).normalized * edgeSlideSpeed;
+            }
+
             newVelocity += movementDelta;
 
             // Add drag to player
@@ -215,7 +228,25 @@ namespace GinjaGaming.FinalCharacterController
 
         private bool IsGrounded()
         {
+            bool grounded = _playerState.InGroundedState() ? 
+                            IsGroundedWhileGrounded() || IsGravityColliderColliding() : 
+                            IsGroundedWhileAirborne();
+
+            return grounded;
+        }
+
+        private bool IsGroundedWhileAirborne()
+        {
             return _characterController.isGrounded;
+        }
+
+        private bool IsGroundedWhileGrounded()
+        {
+            return CharacterControllerUtils.IsOverlapCapsule(_groundCollider, _groundLayers);
+        }
+        private bool IsGravityColliderColliding()
+        {
+            return CharacterControllerUtils.IsOverlapCapsule(_gravityCollider, _groundLayers);
         }
 
         private bool CanRun()
