@@ -13,6 +13,8 @@ namespace GinjaGaming.FinalCharacterController
         [SerializeField] private CharacterController _characterController;
         [SerializeField] private Camera _playerCamera;
         [SerializeField] private CapsuleCollider _groundCollider;
+        [SerializeField] private CapsuleCollider _gravityCollider;
+
         public float RotationMismatch { get; private set; } = 0f;
         public bool IsRotatingToTarget { get; private set; } = false;
 
@@ -27,6 +29,7 @@ namespace GinjaGaming.FinalCharacterController
         public float gravity = 25f;
         public float jumpSpeed = 1.0f;
         public float movingThreshold = 0.01f;
+        public float edgeSlideSpeed = 1f;
 
         [Header("Animation")]
         public float playerModelRotationSpeed = 10f;
@@ -104,9 +107,7 @@ namespace GinjaGaming.FinalCharacterController
 
             _verticalVelocity -= gravity * Time.deltaTime;
 
-            print(IsGroundedWhileGrounded());
-
-            if (isGrounded && _verticalVelocity < 0)
+            if (IsGroundedWhileGrounded() && isGrounded && _verticalVelocity < 0)
                 _verticalVelocity = 0f;
 
             if (_playerLocomotionInput.JumpPressed && isGrounded)
@@ -131,19 +132,28 @@ namespace GinjaGaming.FinalCharacterController
 
             // Get lateral movement from input direction and current slope
             Vector3 normal = isGrounded ? CharacterControllerUtils.GetCharacterControllerNormal(_characterController, _groundLayers) : Vector3.up;
+            Vector3 initialNormal = normal;
+            float normalAngle = Vector3.Angle(normal, Vector3.up);
             normal = new Vector3(0f, normal.y, normal.z).normalized;
 
             Vector3 cameraForwardXZ = new Vector3(_playerCamera.transform.forward.x, 0f, _playerCamera.transform.forward.z).normalized;
             Vector3 cameraRightXZ = new Vector3(_playerCamera.transform.right.x, 0f, _playerCamera.transform.right.z).normalized;
             Vector3 movementDirection = cameraRightXZ * _playerLocomotionInput.MovementInput.x + cameraForwardXZ * _playerLocomotionInput.MovementInput.y;
 
-            Vector3 movementDelta = Vector3.ProjectOnPlane(movementDirection * lateralAcceleration, normal);
+            Vector3 movementDelta = Vector3.ProjectOnPlane(movementDirection * lateralAcceleration * Time.deltaTime, normal);
             Vector3 newVelocity = Vector3.ProjectOnPlane(_characterController.velocity, normal);
+
+            if (normalAngle > _characterController.slopeLimit)
+            {
+                movementDelta = Vector3.zero;
+                movementDelta += new Vector3(initialNormal.x, 0f, initialNormal.z).normalized * edgeSlideSpeed;
+            }
+
             newVelocity += movementDelta;
 
             // Add drag to player
-            Vector3 currentDrag = newVelocity.normalized * drag;
-            newVelocity = (newVelocity.magnitude > drag) ? newVelocity - currentDrag : Vector3.zero;
+            Vector3 currentDrag = newVelocity.normalized * drag * Time.deltaTime;
+            newVelocity = (newVelocity.magnitude > drag * Time.deltaTime) ? newVelocity - currentDrag : Vector3.zero;
             newVelocity = Vector3.ClampMagnitude(newVelocity, clampLateralMagnitude);
             newVelocity.y += _verticalVelocity;
 
@@ -160,10 +170,13 @@ namespace GinjaGaming.FinalCharacterController
 
         private void UpdateCameraRotation()
         {
-            _cameraRotation.x += lookSenseH * _playerLocomotionInput.LookInput.x;
-            _cameraRotation.y = Mathf.Clamp(_cameraRotation.y - lookSenseV * _playerLocomotionInput.LookInput.y, -lookLimitV, lookLimitV);
+            float changeX = lookSenseH * _playerLocomotionInput.LookInput.x * Time.deltaTime;
+            float changeY = lookSenseV * _playerLocomotionInput.LookInput.y * Time.deltaTime;
 
-            _playerTargetRotation.x += transform.eulerAngles.x + lookSenseH * _playerLocomotionInput.LookInput.x;
+            _cameraRotation.x += changeX;
+            _cameraRotation.y = Mathf.Clamp(_cameraRotation.y - changeY, -lookLimitV, lookLimitV);
+
+            _playerTargetRotation.x += changeX;
 
             float rotationTolerance = 90f;
             bool isIdling = _playerState.CurrentPlayerMovementState == PlayerMovementState.Idling;
@@ -224,18 +237,29 @@ namespace GinjaGaming.FinalCharacterController
 
         private bool IsGrounded()
         {
-            bool grounded = _playerState.InGroundedState() ? IsGroundedWhileGrounded() : IsGroundedWhileAirborne();
+            bool grounded = _playerState.InGroundedState() ? IsGroundedWhileGrounded() || IsGravityColliderColliding() : IsGroundedWhileAirborne();
 
             return grounded;
         }
 
         private bool IsGroundedWhileGrounded()
         {
-            Vector3 point1 = _groundCollider.transform.TransformPoint(_groundCollider.center - Vector3.up * (_groundCollider.height * 0.5f - _groundCollider.radius));
-            Vector3 point2 = _groundCollider.transform.TransformPoint(_groundCollider.center + Vector3.up * (_groundCollider.height * 0.5f - _groundCollider.radius));
+            Vector3 center = _groundCollider.transform.TransformPoint(_groundCollider.center);
+            Vector3 heightOffset = Vector3.up * (_groundCollider.height * 0.5f - _groundCollider.radius);
+            Vector3 bottom = center - heightOffset;
+            Vector3 top = center + heightOffset;
 
+            Collider[] colliders = Physics.OverlapCapsule(bottom, top, _groundCollider.radius, _groundLayers);
 
-            Collider[] colliders = Physics.OverlapCapsule(point1, point2, _groundCollider.radius, _groundLayers);
+            return colliders.Length > 0;
+        }
+
+        private bool IsGravityColliderColliding()
+        {
+            Vector3 point1 = _gravityCollider.transform.TransformPoint(_gravityCollider.center - Vector3.up * (_gravityCollider.height * 0.5f - _gravityCollider.radius));
+            Vector3 point2 = _gravityCollider.transform.TransformPoint(_gravityCollider.center + Vector3.up * (_gravityCollider.height * 0.5f - _gravityCollider.radius));
+
+            Collider[] colliders = Physics.OverlapCapsule(point1, point2, _gravityCollider.radius, _groundLayers);
 
             return colliders.Length > 0;
         }

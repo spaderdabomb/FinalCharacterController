@@ -11,23 +11,23 @@ namespace GinjaGaming.FinalCharacterController
         {
 
             Vector3 normal = Vector3.up;
+            Vector3 center = characterController.transform.position + characterController.center;
+            float distance = characterController.height / 2f + characterController.stepOffset + 0.1f;
+
+            Debug.DrawLine(center, center + Vector3.down * distance, Color.red);
+
             RaycastHit hit;
-            Vector3 transformCenter = characterController.transform.position + characterController.center;
-
-            Transform transform = characterController.transform;
-            Vector3 center = transform.position + Vector3.up * characterController.height / 2;
-
-            RaycastHit hit2;
-            if (Physics.Raycast(center, Vector3.down, out hit2, characterController.height / 2f + 0.2f, layerMask))
+            if (Physics.Raycast(center, Vector3.down, out hit, distance, layerMask))
             {
-                normal = hit2.normal;
+                normal = hit.normal;
                 return normal;
             }
 
 
-            if (Physics.SphereCast(transformCenter, characterController.radius, Vector3.down, out hit, characterController.center.y + 0.4f, layerMask))
+            if (Physics.SphereCast(center, characterController.radius, Vector3.down, out hit, distance, layerMask))
             {
                 normal = hit.normal;
+                Debug.Log("sphere check");
                 return normal;
             }
 
