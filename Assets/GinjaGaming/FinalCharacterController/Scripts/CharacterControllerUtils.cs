@@ -6,28 +6,11 @@ namespace GinjaGaming.FinalCharacterController
 {
     public static class CharacterControllerUtils
     {
-        public static Vector3 GetCharacterControllerNormal(CharacterController characterController, LayerMask layerMask = default)
-        {
-            Vector3 normal = Vector3.zero;
-            Vector3 center = characterController.transform.position + characterController.center;
-            float distance = characterController.height / 2f + characterController.stepOffset + 0.1f;
-
-            Debug.DrawLine(center, center - Vector3.up * distance, Color.blue);
-
-            RaycastHit hit;
-            if (Physics.Raycast(center, Vector3.down, out hit, distance + characterController.radius / 2f, layerMask))
-            {
-                return hit.normal;
-            }
-
-            return normal;
-        }
-
         public static Vector3 GetNormalWithSphereCast(CharacterController characterController, LayerMask layerMask = default)
         {
             Vector3 normal = Vector3.up;
             Vector3 center = characterController.transform.position + characterController.center;
-            float distance = characterController.height / 2f + characterController.stepOffset + 0.1f;
+            float distance = characterController.height / 2f + characterController.stepOffset + 0.01f;
 
             RaycastHit hit;
             if (Physics.SphereCast(center, characterController.radius, Vector3.down, out hit, distance, layerMask))
@@ -36,18 +19,6 @@ namespace GinjaGaming.FinalCharacterController
             }
 
             return normal;
-        }
-
-        public static bool IsOverlapCapsule(CapsuleCollider capsuleCollider, LayerMask layerMask = default)
-        {
-            Vector3 center = capsuleCollider.transform.position + capsuleCollider.center;
-            Vector3 heightOffset = Vector3.up * (capsuleCollider.height * 0.5f - capsuleCollider.radius);
-            Vector3 bottom = center - heightOffset;
-            Vector3 top = center + heightOffset;
-
-            Collider[] colliders = Physics.OverlapCapsule(bottom, top, capsuleCollider.radius, layerMask);
-
-            return colliders.Length > 0;
         }
     }
 }
