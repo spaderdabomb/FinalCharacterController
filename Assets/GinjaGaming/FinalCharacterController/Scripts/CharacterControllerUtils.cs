@@ -8,9 +8,11 @@ namespace GinjaGaming.FinalCharacterController
     {
         public static Vector3 GetCharacterControllerNormal(CharacterController characterController, LayerMask layerMask = default)
         {
-            Vector3 normal = Vector3.up;
+            Vector3 normal = Vector3.zero;
             Vector3 center = characterController.transform.position + characterController.center;
             float distance = characterController.height / 2f + characterController.stepOffset + 0.1f;
+
+            Debug.DrawLine(center, center - Vector3.up * distance, Color.blue);
 
             RaycastHit hit;
             if (Physics.Raycast(center, Vector3.down, out hit, distance + characterController.radius / 2f, layerMask))
@@ -18,6 +20,16 @@ namespace GinjaGaming.FinalCharacterController
                 return hit.normal;
             }
 
+            return normal;
+        }
+
+        public static Vector3 GetNormalWithSphereCast(CharacterController characterController, LayerMask layerMask = default)
+        {
+            Vector3 normal = Vector3.up;
+            Vector3 center = characterController.transform.position + characterController.center;
+            float distance = characterController.height / 2f + characterController.stepOffset + 0.1f;
+
+            RaycastHit hit;
             if (Physics.SphereCast(center, characterController.radius, Vector3.down, out hit, distance, layerMask))
             {
                 return hit.normal;
