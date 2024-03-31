@@ -25,6 +25,7 @@ namespace GinjaGaming.FinalCharacterController
         public float inAirAcceleration = 0.15f;
         public float drag = 0.1f;
         public float gravity = 25f;
+        public float terminalVelocity = 50f;
         public float jumpSpeed = 1.0f;
         public float movingThreshold = 0.01f;
 
@@ -129,6 +130,12 @@ namespace GinjaGaming.FinalCharacterController
             if (_playerState.IsStateGroundedState(_lastMovementState) && !isGrounded)
             {
                 _verticalVelocity += _antiBump;
+            }
+
+            // Clamp at terminal velocity
+            if (Mathf.Abs(_verticalVelocity) > Mathf.Abs(terminalVelocity))
+            {
+                _verticalVelocity = -1f * Mathf.Abs(terminalVelocity);
             }
         }
 
@@ -269,7 +276,6 @@ namespace GinjaGaming.FinalCharacterController
         {
             Vector3 normal = CharacterControllerUtils.GetNormalWithSphereCast(_characterController, _groundLayers);
             float angle = Vector3.Angle(normal, Vector3.up);
-            print(angle);
             bool validAngle = angle <= _characterController.slopeLimit;
 
             return _characterController.isGrounded && validAngle;
