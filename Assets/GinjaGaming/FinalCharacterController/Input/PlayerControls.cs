@@ -259,6 +259,54 @@ namespace GinjaGaming.FinalCharacterController
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""PlayerActionsMap"",
+            ""id"": ""e757dc11-d0c6-4741-abac-4eed7052bd1f"",
+            ""actions"": [
+                {
+                    ""name"": ""Gathering"",
+                    ""type"": ""Button"",
+                    ""id"": ""d9ba9315-bc1d-4791-ad3e-9601169f85de"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Attacking"",
+                    ""type"": ""Button"",
+                    ""id"": ""42c2e099-ae12-4034-aaba-bb528b4d1e46"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""015ef00d-d639-408a-aa1b-0ce979b7da0a"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Gathering"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e6f26d82-02fe-4ade-9b05-d4f8c0a271d2"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Attacking"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -273,6 +321,10 @@ namespace GinjaGaming.FinalCharacterController
             // ThirdPersonMap
             m_ThirdPersonMap = asset.FindActionMap("ThirdPersonMap", throwIfNotFound: true);
             m_ThirdPersonMap_ScrollCamera = m_ThirdPersonMap.FindAction("ScrollCamera", throwIfNotFound: true);
+            // PlayerActionsMap
+            m_PlayerActionsMap = asset.FindActionMap("PlayerActionsMap", throwIfNotFound: true);
+            m_PlayerActionsMap_Gathering = m_PlayerActionsMap.FindAction("Gathering", throwIfNotFound: true);
+            m_PlayerActionsMap_Attacking = m_PlayerActionsMap.FindAction("Attacking", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -454,6 +506,60 @@ namespace GinjaGaming.FinalCharacterController
             }
         }
         public ThirdPersonMapActions @ThirdPersonMap => new ThirdPersonMapActions(this);
+
+        // PlayerActionsMap
+        private readonly InputActionMap m_PlayerActionsMap;
+        private List<IPlayerActionsMapActions> m_PlayerActionsMapActionsCallbackInterfaces = new List<IPlayerActionsMapActions>();
+        private readonly InputAction m_PlayerActionsMap_Gathering;
+        private readonly InputAction m_PlayerActionsMap_Attacking;
+        public struct PlayerActionsMapActions
+        {
+            private @PlayerControls m_Wrapper;
+            public PlayerActionsMapActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
+            public InputAction @Gathering => m_Wrapper.m_PlayerActionsMap_Gathering;
+            public InputAction @Attacking => m_Wrapper.m_PlayerActionsMap_Attacking;
+            public InputActionMap Get() { return m_Wrapper.m_PlayerActionsMap; }
+            public void Enable() { Get().Enable(); }
+            public void Disable() { Get().Disable(); }
+            public bool enabled => Get().enabled;
+            public static implicit operator InputActionMap(PlayerActionsMapActions set) { return set.Get(); }
+            public void AddCallbacks(IPlayerActionsMapActions instance)
+            {
+                if (instance == null || m_Wrapper.m_PlayerActionsMapActionsCallbackInterfaces.Contains(instance)) return;
+                m_Wrapper.m_PlayerActionsMapActionsCallbackInterfaces.Add(instance);
+                @Gathering.started += instance.OnGathering;
+                @Gathering.performed += instance.OnGathering;
+                @Gathering.canceled += instance.OnGathering;
+                @Attacking.started += instance.OnAttacking;
+                @Attacking.performed += instance.OnAttacking;
+                @Attacking.canceled += instance.OnAttacking;
+            }
+
+            private void UnregisterCallbacks(IPlayerActionsMapActions instance)
+            {
+                @Gathering.started -= instance.OnGathering;
+                @Gathering.performed -= instance.OnGathering;
+                @Gathering.canceled -= instance.OnGathering;
+                @Attacking.started -= instance.OnAttacking;
+                @Attacking.performed -= instance.OnAttacking;
+                @Attacking.canceled -= instance.OnAttacking;
+            }
+
+            public void RemoveCallbacks(IPlayerActionsMapActions instance)
+            {
+                if (m_Wrapper.m_PlayerActionsMapActionsCallbackInterfaces.Remove(instance))
+                    UnregisterCallbacks(instance);
+            }
+
+            public void SetCallbacks(IPlayerActionsMapActions instance)
+            {
+                foreach (var item in m_Wrapper.m_PlayerActionsMapActionsCallbackInterfaces)
+                    UnregisterCallbacks(item);
+                m_Wrapper.m_PlayerActionsMapActionsCallbackInterfaces.Clear();
+                AddCallbacks(instance);
+            }
+        }
+        public PlayerActionsMapActions @PlayerActionsMap => new PlayerActionsMapActions(this);
         public interface IPlayerLocomotionMapActions
         {
             void OnMovement(InputAction.CallbackContext context);
@@ -465,6 +571,11 @@ namespace GinjaGaming.FinalCharacterController
         public interface IThirdPersonMapActions
         {
             void OnScrollCamera(InputAction.CallbackContext context);
+        }
+        public interface IPlayerActionsMapActions
+        {
+            void OnGathering(InputAction.CallbackContext context);
+            void OnAttacking(InputAction.CallbackContext context);
         }
     }
 }

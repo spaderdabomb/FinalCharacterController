@@ -2645,6 +2645,7 @@ GameObject:
   - component: {fileID: 3391622028761012007}
   - component: {fileID: 412843715707566737}
   - component: {fileID: 5937644712600567144}
+  - component: {fileID: 2772437604046418842}
   m_Layer: 6
   m_Name: ThirdPersonController
   m_TagString: Untagged
@@ -2804,11 +2805,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 208de3d86c1102d4c87ae4a2479f24a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  virtualCamera: {fileID: 0}
-  mainCamera: {fileID: 0}
-  cameraZoomSpeed: 0.1
-  cameraMinZoom: 1
-  cameraMaxZoom: 5
+  _virtualCamera: {fileID: 2270778633857609224}
+  _cameraZoomSpeed: 0.1
+  _cameraMinZoom: 1
+  _cameraMaxZoom: 5
+--- !u!114 &2772437604046418842
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4389807745426357149}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b5e1f0ea1187994c8603b613b63e2b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4447334899436784638
 GameObject:
   m_ObjectHideFlags: 0
