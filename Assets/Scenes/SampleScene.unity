@@ -123,6 +123,25 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &147723532 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5125049330362818286, guid: aa0dc18b8b0e3924a831420e4edc1397,
+    type: 3}
+  m_PrefabInstance: {fileID: 7376899180346460020}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &147723537
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 147723532}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4c41ac9245b87c4192012080077d830, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Damping: 0
 --- !u!1 &175715785
 GameObject:
   m_ObjectHideFlags: 0
@@ -1840,6 +1859,12 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1067275034 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4389807745426357149, guid: aa0dc18b8b0e3924a831420e4edc1397,
+    type: 3}
+  m_PrefabInstance: {fileID: 7376899180346460020}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1136349847
 GameObject:
   m_ObjectHideFlags: 0
@@ -2796,6 +2821,18 @@ LightingSettings:
   m_PVRTiledBaking: 0
   m_NumRaysToShootPerTexel: -1
   m_RespectSceneVisibilityWhenBakingGI: 0
+--- !u!114 &1939452467 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2270778633857609224, guid: aa0dc18b8b0e3924a831420e4edc1397,
+    type: 3}
+  m_PrefabInstance: {fileID: 7376899180346460020}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45e653bab7fb20e499bda25e1b646fea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!43 &2046178130
 Mesh:
   m_ObjectHideFlags: 0
@@ -3314,6 +3351,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2303302932670450523
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1067275034}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5702b2c1469703a4691156ab4c120736, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &7376899180346460020
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3372,15 +3421,104 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1765473728890251610, guid: aa0dc18b8b0e3924a831420e4edc1397,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.5999993
+      objectReference: {fileID: 0}
+    - target: {fileID: 1765473728890251610, guid: aa0dc18b8b0e3924a831420e4edc1397,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1765473728890251610, guid: aa0dc18b8b0e3924a831420e4edc1397,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1849901879102475396, guid: aa0dc18b8b0e3924a831420e4edc1397,
+        type: 3}
+      propertyPath: lookLimitV
+      value: 89
+      objectReference: {fileID: 0}
+    - target: {fileID: 2270778633857609224, guid: aa0dc18b8b0e3924a831420e4edc1397,
+        type: 3}
+      propertyPath: m_Lens.NearClipPlane
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2489236537803590186, guid: aa0dc18b8b0e3924a831420e4edc1397,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.37
+      objectReference: {fileID: 0}
+    - target: {fileID: 3558886260635474220, guid: aa0dc18b8b0e3924a831420e4edc1397,
+        type: 3}
+      propertyPath: DampingIntoCollision
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3558886260635474220, guid: aa0dc18b8b0e3924a831420e4edc1397,
+        type: 3}
+      propertyPath: CameraCollisionFilter.m_Bits
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4389807745426357149, guid: aa0dc18b8b0e3924a831420e4edc1397,
         type: 3}
       propertyPath: m_Name
       value: ThirdPersonController
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 4538738670642246835, guid: aa0dc18b8b0e3924a831420e4edc1397,
+        type: 3}
+      propertyPath: near clip plane
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5937644712600567144, guid: aa0dc18b8b0e3924a831420e4edc1397,
+        type: 3}
+      propertyPath: _cameraMaxZoom
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5937644712600567144, guid: aa0dc18b8b0e3924a831420e4edc1397,
+        type: 3}
+      propertyPath: _cameraMinZoom
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5937644712600567144, guid: aa0dc18b8b0e3924a831420e4edc1397,
+        type: 3}
+      propertyPath: _virtualCamera
+      value: 
+      objectReference: {fileID: 1939452467}
+    - target: {fileID: 5937644712600567144, guid: aa0dc18b8b0e3924a831420e4edc1397,
+        type: 3}
+      propertyPath: _cameraZoomSpeed
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8213313510310394569, guid: aa0dc18b8b0e3924a831420e4edc1397,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.5999993
+      objectReference: {fileID: 0}
+    - target: {fileID: 8213313510310394569, guid: aa0dc18b8b0e3924a831420e4edc1397,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8213313510310394569, guid: aa0dc18b8b0e3924a831420e4edc1397,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 8542818842103482244, guid: aa0dc18b8b0e3924a831420e4edc1397, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4389807745426357149, guid: aa0dc18b8b0e3924a831420e4edc1397,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2303302932670450523}
+    - targetCorrespondingSourceObject: {fileID: 5125049330362818286, guid: aa0dc18b8b0e3924a831420e4edc1397,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 147723537}
   m_SourcePrefab: {fileID: 100100000, guid: aa0dc18b8b0e3924a831420e4edc1397, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

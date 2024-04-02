@@ -235,6 +235,54 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "PlayerActionMap",
+            "id": "6bab2d24-edb3-430d-bd08-2c83cc8bfbcb",
+            "actions": [
+                {
+                    "name": "Attack",
+                    "type": "Button",
+                    "id": "797d40c6-b80b-4d7f-a888-92a1f28fef24",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Gather",
+                    "type": "Button",
+                    "id": "2fa627c8-3f7c-4cd8-8681-8b013255bc3e",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "9bc4db65-897e-4f5f-a011-0fccf1147362",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Attack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2877e534-a3eb-4ef0-9067-17d8199a3c55",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Gather",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []
