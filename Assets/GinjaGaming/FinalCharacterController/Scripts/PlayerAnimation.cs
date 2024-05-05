@@ -9,7 +9,7 @@ namespace GinjaGaming.FinalCharacterController
     public class PlayerAnimation : MonoBehaviour
     {
         [SerializeField] private Animator _animator;
-        [SerializeField] private float locomotionBlendSpeed = 0.02f;
+        [SerializeField] private float locomotionBlendSpeed = 4f;
 
         private PlayerLocomotionInput _playerLocomotionInput;
         private PlayerState _playerState;

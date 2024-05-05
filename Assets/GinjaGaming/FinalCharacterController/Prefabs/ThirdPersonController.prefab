@@ -2743,7 +2743,7 @@ MonoBehaviour:
   drag: 20
   gravity: 25
   terminalVelocity: 50
-  jumpSpeed: 1
+  jumpSpeed: 0.8
   movingThreshold: 0.01
   playerModelRotationSpeed: 10
   rotateToTargetTime: 0.68
@@ -3443,7 +3443,7 @@ MonoBehaviour:
     m_Bits: 1
   IgnoreTag: 
   CameraRadius: 0.2
-  DampingIntoCollision: 0
+  DampingIntoCollision: 0.3
   DampingFromCollision: 2
 --- !u!114 &9189971679662934451
 MonoBehaviour:
