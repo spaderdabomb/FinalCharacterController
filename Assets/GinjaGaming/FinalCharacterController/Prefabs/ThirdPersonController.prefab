@@ -2732,8 +2732,8 @@ MonoBehaviour:
   runAcceleration: 50
   runSpeed: 4
   drag: 30
-  lookSenseH: 20
-  lookSenseV: 20
+  lookSenseH: 0.1
+  lookSenseV: 0.1
   lookLimitV: 70
 --- !u!114 &2318077701276003799
 MonoBehaviour:

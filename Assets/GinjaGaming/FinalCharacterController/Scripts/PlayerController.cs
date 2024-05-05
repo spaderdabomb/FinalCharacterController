@@ -13,9 +13,9 @@ namespace GinjaGaming.FinalCharacterController
         [SerializeField] private Camera _playerCamera;
 
         [Header("Base Movement")]
-        public float runAcceleration = 0.25f;
+        public float runAcceleration = 50f;
         public float runSpeed = 4f;
-        public float drag = 0.1f;
+        public float drag = 20f;
 
         [Header("Camera Settings")]
         public float lookSenseH = 0.1f;
