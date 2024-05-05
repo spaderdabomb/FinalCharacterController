@@ -16,14 +16,14 @@ namespace GinjaGaming.FinalCharacterController
         public bool IsRotatingToTarget { get; private set; } = false;
 
         [Header("Base Movement")]
-        public float walkAcceleration = 0.15f;
-        public float walkSpeed = 3f;
-        public float runAcceleration = 0.25f;
-        public float runSpeed = 6f;
-        public float sprintAcceleration = 0.5f;
-        public float sprintSpeed = 9f;
-        public float inAirAcceleration = 0.15f;
-        public float drag = 0.1f;
+        public float walkAcceleration = 25f;
+        public float walkSpeed = 2f;
+        public float runAcceleration = 35f;
+        public float runSpeed = 4f;
+        public float sprintAcceleration = 50f;
+        public float sprintSpeed = 7f;
+        public float inAirAcceleration = 25f;
+        public float drag = 20f;
         public float gravity = 25f;
         public float terminalVelocity = 50f;
         public float jumpSpeed = 1.0f;
@@ -84,7 +84,7 @@ namespace GinjaGaming.FinalCharacterController
             bool isMovementInput = _playerLocomotionInput.MovementInput != Vector2.zero;             //order
             bool isMovingLaterally = IsMovingLaterally();                                            //matters
             bool isSprinting = _playerLocomotionInput.SprintToggledOn && isMovingLaterally;          //order
-            bool isWalking = (isMovingLaterally && !canRun) || _playerLocomotionInput.WalkToggledOn; //matters
+            bool isWalking = isMovingLaterally && (!canRun || _playerLocomotionInput.WalkToggledOn); //matters
             bool isGrounded = IsGrounded();
 
             PlayerMovementState lateralState = isWalking ? PlayerMovementState.Walking :
