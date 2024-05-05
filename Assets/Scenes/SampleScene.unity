@@ -723,12 +723,6 @@ LightingSettings:
   m_PVRTiledBaking: 0
   m_NumRaysToShootPerTexel: -1
   m_RespectSceneVisibilityWhenBakingGI: 0
---- !u!95 &2303302932670450515 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 8066352358851958603, guid: aa0dc18b8b0e3924a831420e4edc1397,
-    type: 3}
-  m_PrefabInstance: {fileID: 7376899180346460020}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7376899180346460020
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -787,125 +781,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 412843715707566737, guid: aa0dc18b8b0e3924a831420e4edc1397,
-        type: 3}
-      propertyPath: _animator
-      value: 
-      objectReference: {fileID: 2303302932670450515}
-    - target: {fileID: 412843715707566737, guid: aa0dc18b8b0e3924a831420e4edc1397,
-        type: 3}
-      propertyPath: locomotionBlendSpeed
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 1459228644294326337, guid: aa0dc18b8b0e3924a831420e4edc1397,
-        type: 3}
-      propertyPath: m_SkinWidth
-      value: 0.0001
-      objectReference: {fileID: 0}
-    - target: {fileID: 1765473728890251610, guid: aa0dc18b8b0e3924a831420e4edc1397,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1765473728890251610, guid: aa0dc18b8b0e3924a831420e4edc1397,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.98940045
-      objectReference: {fileID: 0}
-    - target: {fileID: 1765473728890251610, guid: aa0dc18b8b0e3924a831420e4edc1397,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0.14521305
-      objectReference: {fileID: 0}
-    - target: {fileID: 1849901879102475396, guid: aa0dc18b8b0e3924a831420e4edc1397,
-        type: 3}
-      propertyPath: drag
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 1849901879102475396, guid: aa0dc18b8b0e3924a831420e4edc1397,
-        type: 3}
-      propertyPath: walkSpeed
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1849901879102475396, guid: aa0dc18b8b0e3924a831420e4edc1397,
-        type: 3}
-      propertyPath: lookLimitV
-      value: 70
-      objectReference: {fileID: 0}
-    - target: {fileID: 1849901879102475396, guid: aa0dc18b8b0e3924a831420e4edc1397,
-        type: 3}
-      propertyPath: sprintSpeed
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 1849901879102475396, guid: aa0dc18b8b0e3924a831420e4edc1397,
-        type: 3}
-      propertyPath: runAcceleration
-      value: 35
-      objectReference: {fileID: 0}
-    - target: {fileID: 1849901879102475396, guid: aa0dc18b8b0e3924a831420e4edc1397,
-        type: 3}
-      propertyPath: walkAcceleration
-      value: 25
-      objectReference: {fileID: 0}
-    - target: {fileID: 1849901879102475396, guid: aa0dc18b8b0e3924a831420e4edc1397,
-        type: 3}
-      propertyPath: rotateToTargetTime
-      value: 0.68
-      objectReference: {fileID: 0}
-    - target: {fileID: 1849901879102475396, guid: aa0dc18b8b0e3924a831420e4edc1397,
-        type: 3}
-      propertyPath: sprintAcceleration
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 1856048055645400407, guid: aa0dc18b8b0e3924a831420e4edc1397,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2318077701276003799, guid: aa0dc18b8b0e3924a831420e4edc1397,
-        type: 3}
-      propertyPath: holdToSprint
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3558886260635474220, guid: aa0dc18b8b0e3924a831420e4edc1397,
-        type: 3}
-      propertyPath: Damping.y
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 3558886260635474220, guid: aa0dc18b8b0e3924a831420e4edc1397,
-        type: 3}
-      propertyPath: ShoulderOffset.z
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4389807745426357149, guid: aa0dc18b8b0e3924a831420e4edc1397,
         type: 3}
       propertyPath: m_Name
       value: ThirdPersonController
-      objectReference: {fileID: 0}
-    - target: {fileID: 8213313510310394569, guid: aa0dc18b8b0e3924a831420e4edc1397,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -2
-      objectReference: {fileID: 0}
-    - target: {fileID: 8213313510310394569, guid: aa0dc18b8b0e3924a831420e4edc1397,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.98940045
-      objectReference: {fileID: 0}
-    - target: {fileID: 8213313510310394569, guid: aa0dc18b8b0e3924a831420e4edc1397,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0.14521305
-      objectReference: {fileID: 0}
-    - target: {fileID: 8542818842103482244, guid: aa0dc18b8b0e3924a831420e4edc1397,
-        type: 3}
-      propertyPath: m_VerticalDamping
-      value: 0.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8542818842103482244, guid: aa0dc18b8b0e3924a831420e4edc1397,
-        type: 3}
-      propertyPath: m_HorizontalDamping
-      value: 0.1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
