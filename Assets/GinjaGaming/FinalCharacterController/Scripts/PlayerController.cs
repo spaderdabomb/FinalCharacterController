@@ -83,7 +83,7 @@ namespace GinjaGaming.FinalCharacterController
             bool isMovementInput = _playerLocomotionInput.MovementInput != Vector2.zero;             //order
             bool isMovingLaterally = IsMovingLaterally();                                            //matters
             bool isSprinting = _playerLocomotionInput.SprintToggledOn && isMovingLaterally;          //order
-            bool isWalking = (isMovingLaterally && !canRun) || _playerLocomotionInput.WalkToggledOn; //matters
+            bool isWalking = isMovingLaterally && (!canRun || _playerLocomotionInput.WalkToggledOn); //matters
             bool isGrounded = IsGrounded();
 
             PlayerMovementState lateralState = isWalking ? PlayerMovementState.Walking :
