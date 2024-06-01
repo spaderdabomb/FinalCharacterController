@@ -145,7 +145,7 @@ namespace GinjaGaming.FinalCharacterController
                 {
                     ""name"": ""up"",
                     ""id"": ""0d8fe1d9-73af-4278-98d0-47a56a910e25"",
-                    ""path"": ""<Gamepad>/leftStick/left"",
+                    ""path"": ""<Gamepad>/leftStick/up"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
